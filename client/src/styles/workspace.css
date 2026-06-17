@@ -1,0 +1,70 @@
+.workspace-container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 2rem;
+}
+
+.workspace-header {
+    margin-bottom: 24px;
+}
+
+.workspace-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 24px;
+}
+
+.documents-panel,
+.chat-panel {
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 20px;
+    background: white;
+}
+
+.upload-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.document-card {
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 10px;
+}
+
+.ask-section {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.ask-section input {
+    flex: 1;
+    padding: 10px;
+}
+
+.answer-card {
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.chat-card {
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 12px;
+}
+
+@media (max-width: 768px) {
+
+  .workspace-grid {
+    grid-template-columns: 1fr;
+  }
+
+}
