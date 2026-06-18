@@ -126,8 +126,8 @@ function Dashboard() {
         <div className="dashboard-container">
 
             <div className="dashboard-header">
-
-                <h1>AI Workbench</h1>
+                <h1>CogniDesk</h1>
+                <h3>AI-Powered Workspace for Research and Document Intelligence</h3>
 
                 <button
                     onClick={handleLogout}
