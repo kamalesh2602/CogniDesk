@@ -148,7 +148,63 @@ function Dashboard() {
                     )
                 }
             />
+            <h2>Quick Start Templates</h2>
 
+            <div className="template-grid">
+
+                <div
+                    className="template-card"
+                    onClick={() =>
+                        navigate("/resume-analyzer")
+                    }
+                >
+
+                    <h3>
+                        📄 Resume Analyzer
+                    </h3>
+
+                    <p>
+                        Compare your resume
+                        against a job
+                        description and get
+                        AI-powered feedback.
+                    </p>
+
+                </div>
+
+                <div className="template-card"
+                    onClick={() =>
+                        navigate(
+                            "/interview-prep"
+                        )
+                    }>
+
+                    <h3>
+                        🎯 Interview Prep
+                    </h3>
+                    <p>Prepare for your interviews</p>
+
+
+
+                </div>
+
+                <div className="template-card"
+                    onClick={() =>
+                        navigate(
+                            "/resume-rewriter"
+                        )}>
+
+                    <h3>
+                        🔬 Resume ReWriter
+                    </h3>
+
+                    <p>
+                        Rewrite your resume tailored for a job description
+                    </p>
+
+                </div>
+
+            </div>
             {/* RECENT WORKSPACES */}
 
             <h2>Recent Workspaces</h2>
@@ -231,6 +287,8 @@ function Dashboard() {
                 </button>
 
             </div>
+
+
 
             {/* ALL WORKSPACES */}
 

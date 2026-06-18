@@ -1,0 +1,75 @@
+from fastapi import (
+    APIRouter,
+    UploadFile,
+    File,
+    Form
+)
+
+import os
+import uuid
+import shutil
+
+from services.pdf_service import (
+    extract_pdf_text
+)
+
+from services.interview_service import (
+    generate_interview_questions
+)
+
+router = APIRouter(
+    prefix="/interview",
+    tags=["Interview Prep"]
+)
+
+
+@router.post("/generate")
+async def generate_questions(
+
+    resume_file: UploadFile = File(...),
+    job_description: str = Form(...)
+
+):
+
+    upload_dir = "uploads"
+
+    os.makedirs(
+        upload_dir,
+        exist_ok=True
+    )
+
+    filename = (
+        f"{uuid.uuid4()}.pdf"
+    )
+
+    path = os.path.join(
+        upload_dir,
+        filename
+    )
+
+    with open(
+        path,
+        "wb"
+    ) as buffer:
+
+        shutil.copyfileobj(
+            resume_file.file,
+            buffer
+        )
+
+    resume_text = extract_pdf_text(
+        path
+    )
+
+    result = (
+        generate_interview_questions(
+            resume_text,
+            job_description
+        )
+    )
+
+    os.remove(path)
+
+    return {
+        "questions": result
+    }

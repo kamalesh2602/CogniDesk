@@ -80,6 +80,25 @@
   background: #e5e5e5;
 }
 
+.template-grid {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.template-card {
+  flex: 1;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.template-card:hover {
+  transform: translateY(-3px);
+}
+
 @media (max-width: 768px) {
 
   .workspace-grid {
