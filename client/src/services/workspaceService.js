@@ -18,6 +18,19 @@ export const deleteWorkspace = async (id) => {
     return response.data;
 };
 
+export const updateWorkspace = async (
+  workspaceId,
+  workspaceData
+) => {
+  const response =
+    await apiClient.put(
+      `/workspaces/${workspaceId}`,
+      workspaceData
+    );
+
+  return response.data;
+};
+
 export const getWorkspace = async (id) => {
     const response = await apiClient.get(`${API}/${id}`);
     return response.data;

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-import { getWorkspaces, getRecentWorkspaces, createWorkspace, deleteWorkspace } from "../services/workspaceService";
+import { getWorkspaces, getRecentWorkspaces, createWorkspace, deleteWorkspace, updateWorkspace } from "../services/workspaceService";
 
 function Dashboard() {
 
@@ -16,6 +16,11 @@ function Dashboard() {
     const [description, setDescription] = useState("");
 
     const [searchTerm, setSearchTerm] = useState("");
+    const [editingId, setEditingId] = useState(null);
+
+    const [editName, setEditName] = useState("");
+
+    const [editDescription, setEditDescription] = useState("");
 
     useEffect(() => {
 
@@ -123,6 +128,34 @@ function Dashboard() {
 
     };
 
+    const handleUpdate =
+        async () => {
+
+            try {
+
+                await updateWorkspace(
+                    editingId,
+                    {
+                        name: editName,
+                        description:
+                            editDescription
+                    }
+                );
+
+                setEditingId(null);
+                setEditName("");
+                setEditDescription("");
+                await loadWorkspaces();
+
+                await loadRecentWorkspaces();
+
+            } catch (error) {
+
+                console.error(error);
+
+            }
+        };
+
     return (
         <div className="dashboard-container">
             <div className="dashboard-header">
@@ -222,15 +255,127 @@ function Dashboard() {
                             <p className="empty-log-text">No workspaces match queries.</p>
                         ) : (
                             filteredWorkspaces.map((workspace) => (
-                                <div key={workspace._id} className="workspace-card">
-                                    <div className="card-link-wrapper" onClick={() => navigate(`/workspace/${workspace._id}`)} style={{ cursor: "pointer", flex: 1 }}>
-                                        <h3>{workspace.name}</h3>
-                                        <p>{workspace.description}</p>
-                                    </div>
-                                    <button onClick={(e) => { e.stopPropagation(); handleDelete(workspace._id); }}>
-                                        Terminate Workspace
-                                    </button>
+
+                                <div
+                                    key={workspace._id}
+                                    className="workspace-card"
+                                >
+
+                                    {
+                                        editingId === workspace._id ? (
+
+                                            <div className="edit-workspace-form">
+
+                                                <input
+                                                    type="text"
+                                                    value={editName}
+                                                    onChange={(e) =>
+                                                        setEditName(
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                />
+
+                                                <input
+                                                    type="text"
+                                                    value={editDescription}
+                                                    onChange={(e) =>
+                                                        setEditDescription(
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                />
+
+                                                <div className="workspace-actions">
+
+                                                    <button
+                                                        onClick={handleUpdate}
+                                                    >
+                                                        Save
+                                                    </button>
+
+                                                    <button
+                                                        onClick={() =>
+                                                            setEditingId(null)
+                                                        }
+                                                    >
+                                                        Cancel
+                                                    </button>
+
+                                                </div>
+
+                                            </div>
+
+                                        ) : (
+
+                                            <>
+                                                <div
+                                                    className="card-link-wrapper"
+                                                    onClick={() =>
+                                                        navigate(
+                                                            `/workspace/${workspace._id}`
+                                                        )
+                                                    }
+                                                    style={{
+                                                        cursor: "pointer",
+                                                        flex: 1
+                                                    }}
+                                                >
+
+                                                    <h3>
+                                                        {workspace.name}
+                                                    </h3>
+
+                                                    <p>
+                                                        {workspace.description}
+                                                    </p>
+
+                                                </div>
+
+                                                <div className="workspace-actions">
+
+                                                    <button
+                                                        onClick={() => {
+
+                                                            setEditingId(
+                                                                workspace._id
+                                                            );
+
+                                                            setEditName(
+                                                                workspace.name
+                                                            );
+
+                                                            setEditDescription(
+                                                                workspace.description
+                                                            );
+
+                                                        }}
+                                                    >
+                                                        Edit
+                                                    </button>
+
+                                                    <button
+                                                        onClick={(e) => {
+
+                                                            e.stopPropagation();
+
+                                                            handleDelete(
+                                                                workspace._id
+                                                            );
+
+                                                        }}
+                                                    >
+                                                        Delete
+                                                    </button>
+
+                                                </div>
+                                            </>
+
+                                        )
+                                    }
+
                                 </div>
+
                             ))
                         )}
                     </div>
