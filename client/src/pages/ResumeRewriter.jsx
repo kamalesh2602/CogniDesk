@@ -4,65 +4,70 @@ import Markdown from "react-markdown";          // Added for crisp text renderin
 import { rewriteResume } from "../services/resumeRewriterService";
 
 function ResumeRewriter() {
-  const navigate = useNavigate(); // Navigation hook
-  const [resume, setResume] = useState(null);
-  const [jobDescription, setJobDescription] = useState("");
-  const [result, setResult] = useState(null);
+    const navigate = useNavigate(); // Navigation hook
+    const [resume, setResume] = useState(null);
+    const [jobDescription, setJobDescription] = useState("");
+    const [result, setResult] = useState(null);
+    const [btn, setBtn] = useState("Rewrite Resume")
 
-  const handleAnalyze = async () => {
-    if (!resume || !jobDescription.trim()) {
-      alert("Upload resume and enter JD");
-      return;
-    }
+    const handleAnalyze = async () => {
 
-    try {
-      const data = await rewriteResume(resume, jobDescription);
-      setResult(data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+        if (!resume || !jobDescription.trim()) {
+            alert("Upload resume and enter JD");
+            return;
+        }
 
-  return (
-    <div className="tool-view-container">
-      {/* TACTICAL NAVIGATION HEADER */}
-      <div className="tool-view-header">
-        <button className="back-btn" onClick={() => navigate("/")}>
-          ← Dashboard
-        </button>
-        <h1>Resume Rewriter</h1>
-      </div>
 
-      <div className="tool-form-layout">
-        <input
-          type="file"
-          accept=".pdf"
-          onChange={(e) => setResume(e.target.files[0])}
-        />
+        try {
+            setBtn("Analyzing...")
+            const data = await rewriteResume(resume, jobDescription);
+            setResult(data);
+            setBtn("Rewrite Resume");
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
-        <textarea
-          rows="10"
-          placeholder="Paste Job Description"
-          value={jobDescription}
-          onChange={(e) => setJobDescription(e.target.value)}
-        />
+    return (
+        <div className="tool-view-container">
+            {/* TACTICAL NAVIGATION HEADER */}
+            <div className="tool-view-header">
+                <button className="back-btn" onClick={() => navigate("/")}>
+                    ← Dashboard
+                </button>
+                <h1>Resume Rewriter</h1>
+            </div>
 
-        <button onClick={handleAnalyze} className="action-submit-btn">
-          Rewrite Resume
-        </button>
-      </div>
+            <div className="tool-form-layout">
+                <input
+                    type="file"
+                    accept=".pdf"
+                    onChange={(e) => setResume(e.target.files[0])}
+                />
 
-      {result && (
-        <div className="analysis-result-section">
-          <h2>Rewritten Resume Suggestions</h2>
-          {/* RICH GRAPHIC DISPLAY REPLACING PRE BLOCK */}
-          <div className="markdown-output-card">
-            <Markdown>{result.result}</Markdown>
-          </div>
+                <textarea
+                    rows="10"
+                    placeholder="Paste Job Description"
+                    value={jobDescription}
+                    onChange={(e) => setJobDescription(e.target.value)}
+                />
+
+                <button onClick={handleAnalyze} className="action-submit-btn">
+                    {btn}
+                </button>
+            </div>
+
+            {result && (
+                <div className="analysis-result-section">
+                    <h2>Rewritten Resume Suggestions</h2>
+                    {/* RICH GRAPHIC DISPLAY REPLACING PRE BLOCK */}
+                    <div className="markdown-output-card">
+                        <Markdown>{result.result}</Markdown>
+                    </div>
+                </div>
+            )}
         </div>
-      )}
-    </div>
-  );
+    );
 }
 
 export default ResumeRewriter;

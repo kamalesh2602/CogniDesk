@@ -9,6 +9,7 @@ function InterviewPrep() {
     const [resume, setResume] = useState(null);
     const [jobDescription, setJobDescription] = useState("");
     const [result, setResult] = useState(null);
+    const [btn, setBtn] = useState("Generate Questions")
 
     const handleGenerate = async () => {
         if (!resume || !jobDescription.trim()) {
@@ -17,11 +18,13 @@ function InterviewPrep() {
         }
 
         try {
+            setBtn("Generating...")
             const data = await generateInterviewQuestions(
                 resume,
                 jobDescription
             );
             setResult(data);
+            setBtn("Generate Questions")
         } catch (error) {
             console.error(error);
         }
@@ -53,7 +56,7 @@ function InterviewPrep() {
                 />
 
                 <button onClick={handleGenerate} className="action-submit-btn">
-                    Generate Questions
+                    {btn}
                 </button>
             </div>
 

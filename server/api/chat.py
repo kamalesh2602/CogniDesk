@@ -79,7 +79,7 @@ def ask_question(
             }
         )
 
-        save_chat(
+    save_chat(
             chat.workspace_id,
             chat.question,
             answer

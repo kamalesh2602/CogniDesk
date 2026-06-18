@@ -8,6 +8,7 @@ function ResumeAnalyzer() {
     const [resume, setResume] = useState(null);
     const [jobDescription, setJobDescription] = useState("");
     const [result, setResult] = useState(null);
+    const [btn, setBtn] = useState("Analyze")
 
     const handleAnalyze = async () => {
         if (!resume || !jobDescription.trim()) {
@@ -16,8 +17,10 @@ function ResumeAnalyzer() {
         }
 
         try {
+            setBtn("Analyzing...")
             const data = await analyzeResume(resume, jobDescription);
             setResult(data);
+            setBtn("Analyze")
         } catch (error) {
             console.error(error);
         }
@@ -48,7 +51,7 @@ function ResumeAnalyzer() {
                 />
 
                 <button onClick={handleAnalyze} className="action-submit-btn">
-                    Analyze
+                    {btn}
                 </button>
             </div>
 
