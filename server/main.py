@@ -8,13 +8,43 @@ from core.config import settings
 
 from db.mongo import db
 
-from api.auth import router as auth_router
+print("1 - main imported")
+
+from contextlib import asynccontextmanager
+print("2")
+
+from fastapi import FastAPI
+print("3")
+
 from api.chat import router as chat_router
+print("4")
+
 from api.documents import router as document_router
-from api.interview import router as interview_router
-from api.resume_analyzer import router as resume_router
-from api.resume_rewriter import router as resume_rewriter_router
+print("5")
+
+from api.auth import router as auth_router
+print("6")
+
 from api.workspaces import router as workspace_router
+print("7")
+
+from api.resume_analyzer import router as resume_router
+print("8")
+
+from api.interview import router as interview_router
+print("9")
+
+from api.resume_rewriter import router as resume_rewriter_router
+print("10")
+
+
+# from api.auth import router as auth_router
+# from api.chat import router as chat_router
+# from api.documents import router as document_router
+# from api.interview import router as interview_router
+# from api.resume_analyzer import router as resume_router
+# from api.resume_rewriter import router as resume_rewriter_router
+# from api.workspaces import router as workspace_router
 
 
 from services.qdrant_service import create_collection
