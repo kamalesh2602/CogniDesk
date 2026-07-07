@@ -1,5 +1,5 @@
 from services.embedding_service import generate_embedding
-from services.qdrant_service import client
+from services.qdrant_service import get_qdrant_client
 from qdrant_client.models import Filter
 from qdrant_client.models import FieldCondition
 from qdrant_client.models import MatchValue
@@ -10,7 +10,7 @@ def search_chunks(
     workspace_id,
     limit=3
 ):
-
+    client = get_qdrant_client()
     query_vector = generate_embedding(
         query
     )

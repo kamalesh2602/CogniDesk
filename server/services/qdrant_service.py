@@ -1,15 +1,20 @@
+from functools import lru_cache
+
 from qdrant_client import QdrantClient
-from qdrant_client.models import VectorParams, Distance
+from qdrant_client.models import (
+    Distance,
+    VectorParams,
+    PayloadSchemaType,
+)
 
 from core.config import settings
 
-
-from functools import lru_cache
 
 @lru_cache
 def get_qdrant_client():
     kwargs = {
         "url": settings.QDRANT_URL,
+        "check_compatibility": False,
     }
 
     if settings.QDRANT_API_KEY:
@@ -18,17 +23,12 @@ def get_qdrant_client():
     return QdrantClient(**kwargs)
 
 
-client = get_qdrant_client()
-
-
-
 def create_collection():
+    client = get_qdrant_client()
+
     collections = client.get_collections()
 
-    existing = [
-        c.name
-        for c in collections.collections
-    ]
+    existing = [c.name for c in collections.collections]
 
     if "document_chunks" not in existing:
 
@@ -40,6 +40,15 @@ def create_collection():
             ),
         )
 
-        return "created"
+    # Create payload index (safe to call every startup)
+    try:
+        client.create_payload_index(
+            collection_name="document_chunks",
+            field_name="workspace_id",
+            field_schema=PayloadSchemaType.KEYWORD,
+        )
+    except Exception:
+        # Already exists
+        pass
 
-    return "already exists"
+    return "ready"

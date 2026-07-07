@@ -17,13 +17,17 @@ from api.resume_rewriter import router as resume_rewriter_router
 from api.workspaces import router as workspace_router
 
 
+from services.qdrant_service import create_collection
+
 @asynccontextmanager
-async def lifespan(app: FastAPI):
-    print("Starting CogniDesk Backend...")
-    os.makedirs(
-    settings.UPLOAD_DIR,
-    exist_ok=True
-)
+async def lifespan(app):
+    os.makedirs(settings.UPLOAD_DIR, exist_ok=True)
+
+    try:
+        create_collection()
+    except Exception as e:
+        print(f"Qdrant collection init skipped: {e}")
+
     yield
     print("Shutting down CogniDesk Backend...")
 
