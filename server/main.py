@@ -1,11 +1,29 @@
+from contextlib import asynccontextmanager
+import os
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from core.config import settings
 
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Create uploads directory if it doesn't exist
+    os.makedirs(settings.UPLOAD_DIR, exist_ok=True)
+
+    print("Starting CogniDesk Backend...")
+    print(f"Upload directory: {settings.UPLOAD_DIR}")
+
+    yield
+
+    print("Shutting down CogniDesk Backend...")
+
+
 app = FastAPI(
     title="CogniDesk API",
-    version="1.0.0"
+    version="1.0.0",
+    lifespan=lifespan,
 )
 
 app.add_middleware(
@@ -33,8 +51,6 @@ def health():
         "status": "healthy"
     }
 
-
-# ---------------- Routers ----------------
 
 from api.auth import router as auth_router
 app.include_router(auth_router)
