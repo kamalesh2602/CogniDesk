@@ -11,13 +11,19 @@ from services.current_user import get_current_user
 from services.pdf_service import extract_pdf_text
 from services.chuking_service import chunk_text
 from services.document_chunk_service import store_chunks
-from services.qdrant_service import client, create_collection
+from services.qdrant_service import (
+    get_qdrant_client,
+    create_collection
+)
 from services.embedding_service import generate_embedding
 from services.vector_service import store_chunks_in_qdrant, delete_document_vectors
-from services.search_service import search_chunks, get_context_chunks
-from services.chat_service import generate_answer
+from services.search_service import search_chunks
 from services.summary_service import generate_summary
 from services.suggestion_service import generate_questions
+from core.config import settings
+
+UPLOAD_DIR = settings.UPLOAD_DIR
+
 
 router = APIRouter(
     prefix="/documents",
@@ -42,13 +48,12 @@ async def upload_document(
             detail="Access denied"
         )
 
-    upload_dir = "uploads"
-    os.makedirs(upload_dir, exist_ok=True)
+    
 
     # Generate unique filename
     file_extension = os.path.splitext(file.filename)[1]
     unique_filename = f"{uuid.uuid4()}{file_extension}"
-    file_path = os.path.join(upload_dir, unique_filename)
+    file_path = os.path.join(UPLOAD_DIR, unique_filename)
 
     # Save file
     with open(file_path, "wb") as buffer:
@@ -136,7 +141,7 @@ def extract_document_text(document_id: str):
 
 @router.delete("/delete-collection")
 def delete_collection():
-    client.delete_collection(collection_name="document_chunks")
+    get_qdrant_client().delete_collection(collection_name="document_chunks")
     return {"message": "deleted"}
 
 
@@ -253,7 +258,7 @@ def process_document(
 
 @router.get("/qdrant-test")
 def qdrant_test():
-    collections = client.get_collections()
+    collections = get_qdrant_client().get_collections()
     return collections.model_dump()
 
 
@@ -316,12 +321,14 @@ def embed_document(
 
 @router.get("/collection-info")
 def collection_info():
-    return client.get_collection("document_chunks").model_dump()
+    return get_qdrant_client().get_collection("document_chunks").model_dump()
 
 
 @router.get("/qdrant-version")
 def qdrant_version():
-    return {"methods": dir(client)}
+    return {
+    "methods": dir(get_qdrant_client())
+}
 
 
 @router.get("/search")
@@ -367,7 +374,7 @@ def create_summary(
         )
 
     text = extract_pdf_text(document["file_path"])
-    text = text[:5000]
+    text = text[:settings.SUMMARY_MAX_CHARS]
     
     summary = generate_summary(text)
     questions = generate_questions(text)

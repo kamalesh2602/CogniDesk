@@ -8,11 +8,18 @@ class Settings(BaseSettings):
     """
 
     MONGO_URI: str
-    DATABASE_NAME: str
+    DATABASE_NAME: str = "cognidesk"
 
     JWT_SECRET: str
     JWT_ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
+
+
+    UPLOAD_DIR: str = "uploads"
+    SUMMARY_MAX_CHARS: int = 5000
+    
+    OPENROUTER_API_KEY: str
+    TAVILY_API_KEY: str
 
     QDRANT_URL: str
     QDRANT_API_KEY: str | None = None

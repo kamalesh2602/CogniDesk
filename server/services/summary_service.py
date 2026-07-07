@@ -1,11 +1,8 @@
 from openai import OpenAI
-import os
-from dotenv import load_dotenv
-
-load_dotenv()
+from core.config import settings
 
 client = OpenAI(
-    api_key=os.getenv("OPENROUTER_API_KEY"),
+    api_key=settings.OPENROUTER_API_KEY,
     base_url="https://openrouter.ai/api/v1"
 )
 

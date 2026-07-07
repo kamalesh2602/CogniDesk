@@ -1,14 +1,10 @@
-import os
 
-from dotenv import load_dotenv
 from tavily import TavilyClient
 
-load_dotenv()
+from core.config import settings
 
 client = TavilyClient(
-    api_key=os.getenv(
-        "TAVILY_API_KEY"
-    )
+    api_key=settings.TAVILY_API_KEY
 )
 
 

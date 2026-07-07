@@ -1,9 +1,6 @@
-# db/mongo.py
 from pymongo import MongoClient
-from dotenv import load_dotenv
-import os
+from core.config import settings
 
-load_dotenv()
+client = MongoClient(settings.MONGO_URI)
 
-client = MongoClient(os.getenv("MONGO_URI"))
-db = client["ai_workbench"]
+db = client[settings.DATABASE_NAME]
