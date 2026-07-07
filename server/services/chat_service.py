@@ -1,10 +1,4 @@
-from core.config import settings
-from openai import OpenAI
-
-client = OpenAI(
-    api_key=settings.OPENROUTER_API_KEY,
-    base_url="https://openrouter.ai/api/v1"
-)
+from services.external_clients import get_openai_client
 
 
 def generate_answer(question, chunks):
@@ -27,6 +21,8 @@ Question:
 
 Answer:
 """
+
+    client = get_openai_client()
 
     response = client.chat.completions.create(
         model="deepseek/deepseek-chat-v3",

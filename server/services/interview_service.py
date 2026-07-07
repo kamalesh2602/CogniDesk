@@ -1,4 +1,4 @@
-from services.chat_service import client
+from services.external_clients import get_openai_client
 
 
 def generate_interview_questions(
@@ -25,6 +25,8 @@ For each question give:
 - Question
 - Ideal Answer
 """
+
+    client = get_openai_client()
 
     response = client.chat.completions.create(
         model="deepseek/deepseek-chat-v3",

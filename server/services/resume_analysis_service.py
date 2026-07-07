@@ -1,6 +1,4 @@
-from services.chat_service import (
-    client
-)
+from services.external_clients import get_openai_client
 
 
 def analyze_resume(
@@ -35,17 +33,16 @@ Provide:
 5. Overall Verdict
 """
 
-    response = (
-        client.chat.completions.create(
-            model=
-            "deepseek/deepseek-chat-v3",
-            messages=[
-                {
-                    "role": "user",
-                    "content": prompt
-                }
-            ]
-        )
+    client = get_openai_client()
+
+    response = client.chat.completions.create(
+        model="deepseek/deepseek-chat-v3",
+        messages=[
+            {
+                "role": "user",
+                "content": prompt
+            }
+        ]
     )
 
     return (

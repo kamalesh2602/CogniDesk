@@ -1,12 +1,11 @@
-from services.chat_service import (
-    client
-)
+from services.external_clients import get_openai_client
 
 
 def write_answer(
     question,
     research_notes
 ):
+    client = get_openai_client()
     prompt = f"""
 You are an AI research assistant.
 

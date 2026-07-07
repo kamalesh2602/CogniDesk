@@ -1,4 +1,4 @@
-from services.chat_service import client
+from services.external_clients import get_openai_client
 
 
 def rewrite_resume(
@@ -29,6 +29,8 @@ Provide:
 
 Keep everything structured.
 """
+
+    client = get_openai_client()
 
     response = client.chat.completions.create(
         model="deepseek/deepseek-chat-v3",

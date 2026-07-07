@@ -1,29 +1,8 @@
-from functools import lru_cache
-
-from qdrant_client import QdrantClient
-from qdrant_client.models import (
-    Distance,
-    VectorParams,
-    PayloadSchemaType,
-)
-
-from core.config import settings
-
-
-@lru_cache
-def get_qdrant_client():
-    kwargs = {
-        "url": settings.QDRANT_URL,
-        "check_compatibility": False,
-    }
-
-    if settings.QDRANT_API_KEY:
-        kwargs["api_key"] = settings.QDRANT_API_KEY
-
-    return QdrantClient(**kwargs)
+from services.external_clients import get_qdrant_client
 
 
 def create_collection():
+    from qdrant_client.models import Distance, VectorParams, PayloadSchemaType
     client = get_qdrant_client()
 
     collections = client.get_collections()

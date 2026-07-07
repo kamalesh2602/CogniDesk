@@ -1,5 +1,6 @@
 from threading import Lock
-from sentence_transformers import SentenceTransformer
+
+from core.config import settings
 
 _model = None
 _model_lock = Lock()
@@ -18,11 +19,11 @@ def get_model():
     if _model is None:
         with _model_lock:
             if _model is None:
-                print("Loading embedding model...")
+                from sentence_transformers import SentenceTransformer
+
                 _model = SentenceTransformer(
-                    "sentence-transformers/all-MiniLM-L6-v2"
+                    settings.EMBEDDING_MODEL
                 )
-                print("Embedding model loaded successfully.")
 
     return _model
 

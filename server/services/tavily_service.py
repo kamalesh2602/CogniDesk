@@ -1,14 +1,8 @@
-
-from tavily import TavilyClient
-
-from core.config import settings
-
-client = TavilyClient(
-    api_key=settings.TAVILY_API_KEY
-)
+from services.external_clients import get_tavily_client
 
 
 def search_web(query):
+    client = get_tavily_client()
 
     response = client.search(
         query=query,

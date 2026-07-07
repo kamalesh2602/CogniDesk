@@ -1,23 +1,15 @@
-from qdrant_client.models import (
-    PointStruct,
-    Filter,
-    FieldCondition,
-    MatchValue,
-    FilterSelector,
-)
-
-from services.qdrant_service import get_qdrant_client
+﻿from services.external_clients import get_qdrant_client
 from services.embedding_service import generate_embedding
 
 
 def store_chunks_in_qdrant(chunks):
+    from qdrant_client.models import PointStruct
 
     client = get_qdrant_client()
 
     points = []
 
     for chunk in chunks:
-
         embedding = generate_embedding(chunk["chunk_text"])
 
         points.append(
@@ -43,6 +35,7 @@ def store_chunks_in_qdrant(chunks):
 
 
 def delete_document_vectors(document_id):
+    from qdrant_client.models import Filter, FieldCondition, MatchValue, FilterSelector
 
     client = get_qdrant_client()
 

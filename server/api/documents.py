@@ -15,7 +15,7 @@ from services.qdrant_service import (
     get_qdrant_client,
     create_collection
 )
-from services.embedding_service import generate_embedding
+# from services.embedding_service import generate_embedding
 from services.vector_service import store_chunks_in_qdrant, delete_document_vectors
 from services.search_service import search_chunks
 from services.summary_service import generate_summary
