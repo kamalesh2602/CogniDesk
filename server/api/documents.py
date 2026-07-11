@@ -11,6 +11,7 @@ from services.current_user import get_current_user
 from services.pdf_service import extract_pdf_text
 from services.chuking_service import chunk_text
 from services.document_chunk_service import store_chunks
+from services.embedding_service import generate_embedding
 from services.qdrant_service import (
     get_qdrant_client,
     create_collection
