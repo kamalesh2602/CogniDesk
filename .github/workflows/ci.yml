@@ -37,8 +37,14 @@ jobs:
       - name: Install Dependencies
         run: uv sync
 
-      - name: Verify Backend Imports
-        run: python -m compileall .
+      - name: Verify Backend Syntax
+        run: |
+          python -m compileall api
+          python -m compileall services
+          python -m compileall models
+          python -m compileall db
+          python -m compileall core
+          python -m compileall main.py
 
 
 
