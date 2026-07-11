@@ -93,14 +93,47 @@ def get_workspace_documents(
 
     if not workspace:
         raise HTTPException(
-            status_code=403, 
+            status_code=403,
             detail="Access denied"
         )
 
     documents = []
-    cursor = db.documents.find({"workspace_id": workspace_id}).sort("uploaded_at", -1)
+
+    cursor = db.documents.find(
+        {
+            "workspace_id": workspace_id
+        }
+    ).sort(
+        "uploaded_at",
+        -1
+    )
 
     for document in cursor:
+
+        # Auto-clean orphaned records
+        if not os.path.exists(document["file_path"]):
+
+            db.document_chunks.delete_many(
+                {
+                    "document_id": str(document["_id"])
+                }
+            )
+
+            try:
+                delete_document_vectors(
+                    str(document["_id"])
+                )
+            except Exception:
+                pass
+
+            db.documents.delete_one(
+                {
+                    "_id": document["_id"]
+                }
+            )
+
+            continue
+
         document["_id"] = str(document["_id"])
         documents.append(document)
 
