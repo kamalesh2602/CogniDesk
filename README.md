@@ -1,4 +1,4 @@
-#  CogniDesk
+# CogniDesk
 
 **AI-Powered Workspace for Research and Document Intelligence**
 
@@ -26,13 +26,11 @@ CogniDesk is a multi-agent AI workspace that combines Retrieval-Augmented Genera
 ### Multi-Agent Research System
 
 * **Research Agent**
-
   * Retrieves relevant document context from Qdrant
   * Searches the web using Tavily when required
   * Collects supporting evidence and sources
 
 * **Writer Agent**
-
   * Synthesizes research results
   * Generates unified, context-aware responses
   * Combines document knowledge with live web information
@@ -86,8 +84,9 @@ CogniDesk is a multi-agent AI workspace that combines Retrieval-Augmented Genera
 
 ### Infrastructure
 
-* Docker
-* Qdrant Local / Qdrant Cloud
+* Docker Compose
+* MongoDB Docker
+* Qdrant Docker / Qdrant Cloud
 
 ---
 
@@ -117,21 +116,56 @@ Sources & Citations
 
 ---
 
-## Installation
+# Installation
 
-### Clone Repository
+## Clone Repository
 
 ```bash
-git clone https://github.com/kamalesh2602/CogniDesk
-cd cognidesk
+git clone https://github.com/kamalesh2602/CogniDesk.git
+cd CogniDesk
 ```
 
 ---
 
-### Backend Setup
+## Docker Setup (Recommended)
+
+### Create Docker Environment Files
+
+Copy the example files:
+
+```bash
+cp server/.env.docker.example server/.env.docker
+cp client/.env.docker.example client/.env.docker
+```
+
+Fill in the required API keys inside:
+
+```text
+server/.env.docker
+```
+
+Then start the complete application:
+
+```bash
+docker compose up --build
+```
+
+The application will be available at:
+
+| Service | URL |
+|----------|-----|
+| Frontend | http://localhost:5173 |
+| Backend | http://localhost:8000 |
+| Qdrant Dashboard | http://localhost:6333/dashboard |
+| MongoDB | localhost:27017 |
+
+---
+
+## Backend Setup
 
 ```bash
 cd server
+
 uv sync
 
 or
@@ -145,13 +179,11 @@ python -m venv .venv
 source .venv/bin/activate
 
 pip install -r requirements.txt
-
-
 ```
 
 ---
 
-### Frontend Setup
+## Frontend Setup
 
 ```bash
 cd client
@@ -165,9 +197,41 @@ npm run dev
 
 ## Environment Variables
 
-Create a `.env` file using the provided `.env.example`.
+### Local Development
 
-### Required Variables
+Create the following files from the provided examples:
+
+```text
+server/.env
+client/.env
+```
+
+using
+
+```text
+server/.env.example
+client/.env.example
+```
+
+### Docker
+
+Create the following files:
+
+```text
+server/.env.docker
+client/.env.docker
+```
+
+using
+
+```text
+server/.env.docker.example
+client/.env.docker.example
+```
+
+---
+
+## Required Variables
 
 ```env
 MONGO_URI=
@@ -234,6 +298,14 @@ client = QdrantClient(
 
 ## Running the Application
 
+### Docker
+
+```bash
+docker compose up --build
+```
+
+---
+
 ### Backend
 
 ```bash
@@ -259,6 +331,7 @@ npm run dev
 * Resume Analysis Tools
 * Source Citations
 * Workspace-Based Knowledge Management
+* Full Docker Compose Support
 
 ---
 
@@ -273,6 +346,4 @@ npm run dev
 
 ---
 
-
-
-Built using React, FastAPI, MongoDB, Qdrant, OpenRouter, and Tavily.
+Built using **React, FastAPI, MongoDB, Qdrant, OpenRouter, Tavily, and Docker.**
