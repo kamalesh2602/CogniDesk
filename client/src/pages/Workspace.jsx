@@ -26,6 +26,10 @@ function Workspace() {
   const [expandedSummary, setExpandedSummary] = useState(null);
 
   useEffect(() => {
+    setAnswer("");
+    setSources([]);
+    setQuestion("");
+
     loadWorkspace();
     loadDocuments();
     loadChatHistory();
@@ -72,12 +76,11 @@ function Workspace() {
 
       try {
 
-        await clearChatHistory(
-          id
-        );
+        await clearChatHistory(id);
 
         setChatHistory([]);
         setAnswer("");
+        setSources([]);
 
       } catch (error) {
 
