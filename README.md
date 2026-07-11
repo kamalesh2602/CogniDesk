@@ -1,3 +1,4 @@
+![CI](https://github.com/kamalesh2602/CogniDesk/actions/workflows/ci.yml/badge.svg)
 # CogniDesk
 
 **AI-Powered Workspace for Research and Document Intelligence**
